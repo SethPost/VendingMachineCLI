@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 public abstract class VendingMachineItem {
     private String name;
     private BigDecimal price;
-    private int quantity;
     private String code;
     private String message;
 
@@ -25,14 +24,6 @@ public abstract class VendingMachineItem {
         this.price = price;
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
     public String getCode() {
         return code;
     }
@@ -49,10 +40,9 @@ public abstract class VendingMachineItem {
         this.message = message;
     }
 
-    public VendingMachineItem(String name, BigDecimal price, int quantity, String code) {
+    public VendingMachineItem(String name, BigDecimal price, String code) {
         this.name = name;
         this.price = price;
-        this. quantity = quantity;
         this.code = code;
 
     }
