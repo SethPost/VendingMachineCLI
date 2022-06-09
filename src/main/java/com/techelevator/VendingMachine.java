@@ -8,14 +8,21 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class VendingMachine {
+    //Instance variables
     private BigDecimal currentMoneyProvided;
+    List<VendingMachineItem> vendingMachineInventory = new ArrayList<VendingMachineItem>();
+    Scanner userInput = new Scanner(System.in);
 
-    List<VendingMachineItem> vendingMachineInventory = new ArrayList<VendingMachineItem>() {
+    //Constructor
+    public VendingMachine() {
+        currentMoneyProvided = new BigDecimal("0.00");
+    }
         //Log printwriter here???
         //other instance variables if we need them?
 
         //Establishing the inventory
-        try(Scanner inventoryScanner = new Scanner("C:\\Users\\Student\\workspace\\nlr-8-module-1-capstone-team-6-take-2\\vendingmachine.csv")){
+        //Ask about try and catch error
+        try (Scanner inventoryScanner = new Scanner("C:\\Users\\Student\\workspace\\nlr-8-module-1-capstone-team-6-take-2\\vendingmachine.csv")){
             while (inventoryScanner.hasNextLine()) {
                 String currentLine = inventoryScanner.nextLine();
                 String[] itemDetails = currentLine.split("\\|");
@@ -69,22 +76,55 @@ public class VendingMachine {
                     vendingMachineInventory.add(triplemint);
                 }
             }
-        } catch(
-        FileNotFoundException ex);
-
-        {
+        //Ask about try and catch error?
+        } catch (FileNotFoundException ex) {
             System.out.println("That file does not exist.");
         }
 
+        //Method that displays vending machine items (customer input "1" from main menu)
         public void displayItems() {
             for (VendingMachineItem vendingMachineItem : vendingMachineInventory) {
                 if (vendingMachineItem.getQuantity() > 0) {
                     System.out.println(vendingMachineItem.getCode() + " | " + vendingMachineItem.getName() + " | $" + vendingMachineItem.getPrice() + " | "
-                            + "Quantity: "vendingMachineItem.getQuantity());
+                            + "Quantity: " + vendingMachineItem.getQuantity());
                 } else {
-                    System.out.println(System.out.println(vendingMachineItem.getCode() + " | " + vendingMachineItem.getName() + " | $" + vendingMachineItem.getPrice() + " | SOLD OUT"));
+                    System.out.println(vendingMachineItem.getCode() + " | " + vendingMachineItem.getName() + " | $" + vendingMachineItem.getPrice() + " | SOLD OUT");
                 }
             }
         }
+
+        //Method that adds a dollar to the total money provided by customer (customer input "1" from purchase menu)
+        public BigDecimal feedMoney() {
+            currentMoneyProvided.add(new BigDecimal("1.00"));
+            System.out.println(currentMoneyProvided);
+            return currentMoneyProvided;
+        }
+
+        //Method used to select and buy product (Step 7 ii in Readme) (customer input "2" from purchase menu)
+        public void selectProduct() {
+            VendingMachine vendingMachine = new VendingMachine();
+            vendingMachine.displayItems();
+            String userCode = userInput.nextLine();
+            // Nest in while loop to return to purchase menu??
+            for (VendingMachineItem vendingMachineItem : vendingMachineInventory) {
+                if (userCode.equalsIgnoreCase(vendingMachineItem.getCode())) {
+                    if (vendingMachineItem.getQuantity() > 0) {
+                        vendingMachineItem.setQuantity(vendingMachineItem.getQuantity() - 1);
+                        currentMoneyProvided.subtract(vendingMachineItem.getPrice());
+                        System.out.println(vendingMachineItem.getName() + " | Cost: $" + vendingMachineItem.getPrice()
+                                + " | Money Remaining: $" + currentMoneyProvided);
+                        System.out.println(vendingMachineItem.getMessage());
+                        //go back to purchase menu
+                    } else {
+                        System.out.println("Sorry, but that DELICIOUS item is sold out.");
+                        //go back to purchase menu
+                    }
+                } else {
+                    System.out.println("Sorry, that code is invalid.");
+                    //go back to purchase menu
+                }
+            }
+
+        }
     }
-    }
+

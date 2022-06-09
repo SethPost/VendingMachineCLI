@@ -32,7 +32,7 @@ public abstract class VendingMachineItem {
     public int getQuantity() {
         return quantity;}
 
-    public void setQuantity(){
+    public void setQuantity(int quantity){
         this.quantity = quantity;}
 
     public void setCode(String code) {
