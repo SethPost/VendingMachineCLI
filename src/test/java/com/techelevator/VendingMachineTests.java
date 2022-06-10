@@ -4,9 +4,11 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.util.Scanner;
 
 public class VendingMachineTests {
     private VendingMachine vendingMachine = new VendingMachine(new BigDecimal("0.00"));
+
 
     @Test
     public void test_display_items() {
@@ -36,6 +38,13 @@ public class VendingMachineTests {
         BigDecimal expectedResult = new BigDecimal("10.00");
         vendingMachine.feedMoney(amountAdded);
         Assert.assertEquals(expectedResult, vendingMachine.getCurrentMoneyProvided());
+    }
+
+    @Test
+    public void test_select_product_invalid_code(){
+        VendingMachine testVendingMachine = new VendingMachine(new BigDecimal("10.00"));
+        BigDecimal result = testVendingMachine.selectProduct("A1");
+        Assert.assertEquals("6.95", result);
     }
 
 

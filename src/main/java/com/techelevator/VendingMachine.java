@@ -115,16 +115,15 @@ public class VendingMachine {
     }
 
     //Method used to select and buy product (Step 7 ii in Readme) (customer input "2" from purchase menu)
-    public BigDecimal selectProduct() {
-        VendingMachine vendingMachine = new VendingMachine();
-        vendingMachine.displayItems();
-        String userCode = userInput.nextLine();
+    public BigDecimal selectProduct(String userCode) {
         // Nest in while loop to return to purchase menu??
         for (VendingMachineItem vendingMachineItem : vendingMachineInventory) {
             if (userCode.equalsIgnoreCase(vendingMachineItem.getCode())) {
                 if (vendingMachineItem.getQuantity() > 0) {
                     vendingMachineItem.setQuantity(vendingMachineItem.getQuantity() - 1);
-                    currentMoneyProvided.subtract(vendingMachineItem.getPrice());
+                    BigDecimal newBalance;
+                    newBalance = currentMoneyProvided.subtract(vendingMachineItem.getPrice());
+                    currentMoneyProvided = newBalance;
                     System.out.println(vendingMachineItem.getName() + " | Cost: $" + vendingMachineItem.getPrice()
                             + " | Money Remaining: $" + currentMoneyProvided);
                     System.out.println(vendingMachineItem.getMessage());
