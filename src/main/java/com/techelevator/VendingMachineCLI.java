@@ -43,6 +43,9 @@ public class VendingMachineCLI {
 	}
 
 	public static void main(String[] args) {
+		VendingMachine vendingMachine = new VendingMachine();
+		vendingMachine.readInventoryFile();
+		vendingMachine.displayItems();
 		Menu menu = new Menu(System.in, System.out);
 		VendingMachineCLI cli = new VendingMachineCLI(menu);
 		cli.run();

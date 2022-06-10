@@ -61,28 +61,28 @@ public class VendingMachine {
                 } else if (itemDetails[0].equals("B4")) {
                     Candy crunchie = new Candy(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Candy.CANDY_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
                     vendingMachineInventory.add(crunchie);
-                } else if (itemDetails[3].equals("C1")) {
+                } else if (itemDetails[0].equals("C1")) {
                     Beverage cola = new Beverage(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Beverage.BEVERAGE_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
                     vendingMachineInventory.add(cola);
-                } else if (itemDetails[3].equals("C2")) {
+                } else if (itemDetails[0].equals("C2")) {
                     Beverage drSalt = new Beverage(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Beverage.BEVERAGE_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
                     vendingMachineInventory.add(drSalt);
-                } else if (itemDetails[3].equals("C3")) {
+                } else if (itemDetails[0].equals("C3")) {
                     Beverage mountainMelter = new Beverage(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Beverage.BEVERAGE_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
                     vendingMachineInventory.add(mountainMelter);
-                } else if (itemDetails[3].equals("C4")) {
+                } else if (itemDetails[0].equals("C4")) {
                     Beverage heavy = new Beverage(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Beverage.BEVERAGE_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
                     vendingMachineInventory.add(heavy);
-                } else if (itemDetails[3].equals("D1")) {
+                } else if (itemDetails[0].equals("D1")) {
                     Gum uChews = new Gum(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Gum.GUM_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
                     vendingMachineInventory.add(uChews);
-                } else if (itemDetails[3].equals("D2")) {
+                } else if (itemDetails[0].equals("D2")) {
                     Gum littleLeague = new Gum(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Gum.GUM_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
                     vendingMachineInventory.add(littleLeague);
-                } else if (itemDetails[3].equals("D3")) {
+                } else if (itemDetails[0].equals("D3")) {
                     Gum chiclets = new Gum(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Gum.GUM_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
                     vendingMachineInventory.add(chiclets);
-                } else if (itemDetails[3].equals("D4")) {
+                } else if (itemDetails[0].equals("D4")) {
                     Gum triplemint = new Gum(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Gum.GUM_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
                     vendingMachineInventory.add(triplemint);
                 }
@@ -116,17 +116,18 @@ public class VendingMachine {
 
     //Method used to select and buy product (Step 7 ii in Readme) (customer input "2" from purchase menu)
     public BigDecimal selectProduct(String userCode) {
+        BigDecimal newBalance = new BigDecimal("0.00");
         // Nest in while loop to return to purchase menu??
         for (VendingMachineItem vendingMachineItem : vendingMachineInventory) {
             if (userCode.equalsIgnoreCase(vendingMachineItem.getCode())) {
                 if (vendingMachineItem.getQuantity() > 0) {
                     vendingMachineItem.setQuantity(vendingMachineItem.getQuantity() - 1);
-                    BigDecimal newBalance;
                     newBalance = currentMoneyProvided.subtract(vendingMachineItem.getPrice());
                     currentMoneyProvided = newBalance;
                     System.out.println(vendingMachineItem.getName() + " | Cost: $" + vendingMachineItem.getPrice()
                             + " | Money Remaining: $" + currentMoneyProvided);
                     System.out.println(vendingMachineItem.getMessage());
+                    return currentMoneyProvided;
                     //go back to purchase menu
                 } else {
                     System.out.println("Sorry, but that DELICIOUS item is sold out.");
@@ -136,9 +137,7 @@ public class VendingMachine {
                 System.out.println("Sorry, that code is invalid.");
                 //go back to purchase menu
             }
-        }
-        return currentMoneyProvided;
-
+        } return newBalance;
     }
 
     public BigDecimal finishTransaction() {
@@ -146,19 +145,23 @@ public class VendingMachine {
         BigDecimal dimeCounter = new BigDecimal("0");
         BigDecimal nickleCounter = new BigDecimal("0");
 
-
-        String[] coin = new String[]{"Quarter(s)", "Dime(s)", "Nickle(s)"};
         while (currentMoneyProvided.compareTo(QUARTER) >= 0) {
-            quarterCounter.add(new BigDecimal("1"));
-            currentMoneyProvided.subtract(QUARTER);
+            BigDecimal newQuarterCounter = quarterCounter.add(new BigDecimal("1"));
+            quarterCounter = newQuarterCounter;
+            BigDecimal newBalance = currentMoneyProvided.subtract(QUARTER);
+            currentMoneyProvided = newBalance;
         }
         while (currentMoneyProvided.compareTo(DIME) >= 0) {
-            dimeCounter.add(new BigDecimal("1"));
-            currentMoneyProvided.subtract(DIME);
+            BigDecimal newDimeCounter = dimeCounter.add(new BigDecimal("1"));
+            dimeCounter = newDimeCounter;
+            BigDecimal newBalance = currentMoneyProvided.subtract(DIME);
+            currentMoneyProvided = newBalance;
         }
         while (currentMoneyProvided.compareTo(NICKLE) >= 0) {
-            nickleCounter.add(new BigDecimal("1"));
-            currentMoneyProvided.subtract(NICKLE);
+            BigDecimal newNickleCounter = nickleCounter.add(new BigDecimal("1"));
+            nickleCounter = newNickleCounter;
+            BigDecimal newBalance = currentMoneyProvided.subtract(NICKLE);
+            currentMoneyProvided = newBalance;
         }
         BigDecimal totalChange = (QUARTER.multiply(quarterCounter)).add(DIME.multiply(dimeCounter)).add(NICKLE.multiply(nickleCounter));
         System.out.println("Your total change is $" + totalChange + ".");

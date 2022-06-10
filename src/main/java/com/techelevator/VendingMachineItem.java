@@ -47,11 +47,11 @@ public abstract class VendingMachineItem {
         this.message = message;
     }
 
-    public VendingMachineItem(String name, BigDecimal price, String code, int quantity) {
+    public VendingMachineItem(String name, BigDecimal price, String code) {
         this.name = name;
         this.price = price;
         this.code = code;
-        quantity = STARTING_QUANTITY;
+        this.quantity = STARTING_QUANTITY;
 
     }
 
