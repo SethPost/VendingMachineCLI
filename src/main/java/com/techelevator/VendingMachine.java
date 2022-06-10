@@ -2,7 +2,11 @@ package com.techelevator;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class VendingMachine {
@@ -13,6 +17,7 @@ public class VendingMachine {
     public static final BigDecimal QUARTER = new BigDecimal("0.25");
     public static final BigDecimal DIME = new BigDecimal("0.10");
     public static final BigDecimal NICKLE = new BigDecimal("0.05");
+
 
     public BigDecimal getCurrentMoneyProvided() {
         return currentMoneyProvided;
@@ -111,7 +116,23 @@ public class VendingMachine {
         newBalance = currentMoneyProvided.add(moneyAdded);
         currentMoneyProvided = newBalance;
         System.out.println("Total money added: $" + currentMoneyProvided);
+
+        File log = new File("C:\\Users\\Student\\workspace\\nlr-8-module-1-capstone-team-6-take-2\\Log.txt");
+        try (PrintWriter transactionLog = new PrintWriter(
+                new FileOutputStream(log, true)
+        )) {
+            // resource for finding how to get date and time - https://www.javatpoint.com/java-get-current-date
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm:ss a");
+            LocalDateTime now = LocalDateTime.now();
+            transactionLog.println(dtf.format(now) + " FEED MONEY: $" + moneyAdded + " $" + currentMoneyProvided);
+
+
+        } catch (FileNotFoundException ex) {
+            System.out.println("File not Found");
+        }
+
         return currentMoneyProvided;
+
     }
 
     //Method used to select and buy product (Step 7 ii in Readme) (customer input "2" from purchase menu)
@@ -127,8 +148,24 @@ public class VendingMachine {
                     System.out.println(vendingMachineItem.getName() + " | Cost: $" + vendingMachineItem.getPrice()
                             + " | Money Remaining: $" + currentMoneyProvided);
                     System.out.println(vendingMachineItem.getMessage());
-                    return currentMoneyProvided;
+
+                    File log = new File("C:\\Users\\Student\\workspace\\nlr-8-module-1-capstone-team-6-take-2\\Log.txt");
+                    try (PrintWriter transactionLog = new PrintWriter(
+                            new FileOutputStream(log, true)
+                    )) {
+                        // resource for finding how to get date and time - https://www.javatpoint.com/java-get-current-date
+                        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm:ss a");
+                        LocalDateTime now = LocalDateTime.now();
+                        transactionLog.println(dtf.format(now) + " " + vendingMachineItem.getName() + " " + vendingMachineItem.getCode() + " $"
+                                + vendingMachineItem.getPrice() + " $" + currentMoneyProvided);
+
+
+                    } catch (FileNotFoundException ex) {
+                        System.out.println("File not Found");
+                    }
+
                     //go back to purchase menu
+                    return currentMoneyProvided;
                 } else {
                     System.out.println("Sorry, but that DELICIOUS item is sold out.");
                     //go back to purchase menu
@@ -137,7 +174,9 @@ public class VendingMachine {
                 System.out.println("Sorry, that code is invalid.");
                 //go back to purchase menu
             }
-        } return newBalance;
+
+        }
+        return newBalance;
     }
 
     public BigDecimal finishTransaction() {
@@ -168,9 +207,29 @@ public class VendingMachine {
         System.out.println("Total Quarters = " + quarterCounter);
         System.out.println("Total Dimes = " + dimeCounter);
         System.out.println("Total Nickles = " + nickleCounter);
+
+        File log = new File("C:\\Users\\Student\\workspace\\nlr-8-module-1-capstone-team-6-take-2\\Log.txt");
+        try (PrintWriter transactionLog = new PrintWriter(
+                new FileOutputStream(log, true)
+        )) {
+            // resource for finding how to get date and time - https://www.javatpoint.com/java-get-current-date
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm:ss a");
+            LocalDateTime now = LocalDateTime.now();
+            transactionLog.println(dtf.format(now) + " GIVE CHANGE: $" + totalChange + " $" + currentMoneyProvided);
+
+
+        } catch (FileNotFoundException ex) {
+            System.out.println("File not Found");
+
+
+        }
         return currentMoneyProvided;
         // return to Main Menu
-        }
 
+    }
 }
+
+
+
+
 
