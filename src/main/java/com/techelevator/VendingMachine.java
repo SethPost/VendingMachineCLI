@@ -1,5 +1,6 @@
 package com.techelevator;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.util.*;
@@ -13,9 +14,15 @@ public class VendingMachine {
     public static final BigDecimal DIME = new BigDecimal("0.10");
     public static final BigDecimal NICKLE = new BigDecimal("0.05");
 
+    public BigDecimal getCurrentMoneyProvided() {
+        return currentMoneyProvided;
+    }
 
-    //Constructor
+    //Constructors
     public VendingMachine() {
+    }
+
+    public VendingMachine(BigDecimal currentMoneyProvided) {
         this.currentMoneyProvided = currentMoneyProvided;
     }
     //Log printwriter here???
@@ -23,69 +30,67 @@ public class VendingMachine {
 
     //Establishing the inventory
     //Ask about try and catch error
-        try(
-    Scanner inventoryScanner = new Scanner("C:\\Users\\Student\\workspace\\nlr-8-module-1-capstone-team-6-take-2\\vendingmachine.csv"))
+    public void readInventoryFile() {
+        File inventoryFile = new File("C:\\Users\\Student\\workspace\\nlr-8-module-1-capstone-team-6-take-2\\vendingmachine.csv");
+        try (Scanner inventoryScanner = new Scanner(inventoryFile)) {
 
-    {
-        while (inventoryScanner.hasNextLine()) {
-            String currentLine = inventoryScanner.nextLine();
-            String[] itemDetails = currentLine.split("\\|");
-            if (itemDetails[0].equals("A1")) {
-                Chips potatoCrisps = new Chips(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Chips.CHIPS_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
-                vendingMachineInventory.add(potatoCrisps);
-            } else if (itemDetails[0].equals("A2")) {
-                Chips stackers = new Chips(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Chips.CHIPS_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
-                vendingMachineInventory.add(stackers);
-            } else if (itemDetails[0].equals("A3")) {
-                Chips grainWaves = new Chips(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Chips.CHIPS_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
-                vendingMachineInventory.add(grainWaves);
-            } else if (itemDetails[0].equals("A4")) {
-                Chips cloudPopcorn = new Chips(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Chips.CHIPS_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
-                vendingMachineInventory.add(cloudPopcorn);
-            } else if (itemDetails[0].equals("B1")) {
-                Candy moonPie = new Candy(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Candy.CANDY_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
-                vendingMachineInventory.add(moonPie);
-            } else if (itemDetails[0].equals("B2")) {
-                Candy cowTails = new Candy(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Candy.CANDY_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
-                vendingMachineInventory.add(cowTails);
-            } else if (itemDetails[0].equals("B3")) {
-                Candy wonkaBar = new Candy(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Candy.CANDY_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
-                vendingMachineInventory.add(wonkaBar);
-            } else if (itemDetails[0].equals("B4")) {
-                Candy crunchie = new Candy(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Candy.CANDY_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
-                vendingMachineInventory.add(crunchie);
-            } else if (itemDetails[3].equals("C1")) {
-                Beverage cola = new Beverage(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Beverage.BEVERAGE_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
-                vendingMachineInventory.add(cola);
-            } else if (itemDetails[3].equals("C2")) {
-                Beverage drSalt = new Beverage(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Beverage.BEVERAGE_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
-                vendingMachineInventory.add(drSalt);
-            } else if (itemDetails[3].equals("C3")) {
-                Beverage mountainMelter = new Beverage(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Beverage.BEVERAGE_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
-                vendingMachineInventory.add(mountainMelter);
-            } else if (itemDetails[3].equals("C4")) {
-                Beverage heavy = new Beverage(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Beverage.BEVERAGE_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
-                vendingMachineInventory.add(heavy);
-            } else if (itemDetails[3].equals("D1")) {
-                Gum uChews = new Gum(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Gum.GUM_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
-                vendingMachineInventory.add(uChews);
-            } else if (itemDetails[3].equals("D2")) {
-                Gum littleLeague = new Gum(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Gum.GUM_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
-                vendingMachineInventory.add(littleLeague);
-            } else if (itemDetails[3].equals("D3")) {
-                Gum chiclets = new Gum(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Gum.GUM_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
-                vendingMachineInventory.add(chiclets);
-            } else if (itemDetails[3].equals("D4")) {
-                Gum triplemint = new Gum(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Gum.GUM_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
-                vendingMachineInventory.add(triplemint);
+            while (inventoryScanner.hasNextLine()) {
+                String currentLine = inventoryScanner.nextLine();
+                String[] itemDetails = currentLine.split("\\|");
+                if (itemDetails[0].equals("A1")) {
+                    Chips potatoCrisps = new Chips(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Chips.CHIPS_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
+                    vendingMachineInventory.add(potatoCrisps);
+                } else if (itemDetails[0].equals("A2")) {
+                    Chips stackers = new Chips(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Chips.CHIPS_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
+                    vendingMachineInventory.add(stackers);
+                } else if (itemDetails[0].equals("A3")) {
+                    Chips grainWaves = new Chips(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Chips.CHIPS_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
+                    vendingMachineInventory.add(grainWaves);
+                } else if (itemDetails[0].equals("A4")) {
+                    Chips cloudPopcorn = new Chips(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Chips.CHIPS_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
+                    vendingMachineInventory.add(cloudPopcorn);
+                } else if (itemDetails[0].equals("B1")) {
+                    Candy moonPie = new Candy(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Candy.CANDY_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
+                    vendingMachineInventory.add(moonPie);
+                } else if (itemDetails[0].equals("B2")) {
+                    Candy cowTails = new Candy(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Candy.CANDY_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
+                    vendingMachineInventory.add(cowTails);
+                } else if (itemDetails[0].equals("B3")) {
+                    Candy wonkaBar = new Candy(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Candy.CANDY_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
+                    vendingMachineInventory.add(wonkaBar);
+                } else if (itemDetails[0].equals("B4")) {
+                    Candy crunchie = new Candy(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Candy.CANDY_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
+                    vendingMachineInventory.add(crunchie);
+                } else if (itemDetails[3].equals("C1")) {
+                    Beverage cola = new Beverage(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Beverage.BEVERAGE_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
+                    vendingMachineInventory.add(cola);
+                } else if (itemDetails[3].equals("C2")) {
+                    Beverage drSalt = new Beverage(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Beverage.BEVERAGE_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
+                    vendingMachineInventory.add(drSalt);
+                } else if (itemDetails[3].equals("C3")) {
+                    Beverage mountainMelter = new Beverage(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Beverage.BEVERAGE_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
+                    vendingMachineInventory.add(mountainMelter);
+                } else if (itemDetails[3].equals("C4")) {
+                    Beverage heavy = new Beverage(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Beverage.BEVERAGE_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
+                    vendingMachineInventory.add(heavy);
+                } else if (itemDetails[3].equals("D1")) {
+                    Gum uChews = new Gum(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Gum.GUM_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
+                    vendingMachineInventory.add(uChews);
+                } else if (itemDetails[3].equals("D2")) {
+                    Gum littleLeague = new Gum(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Gum.GUM_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
+                    vendingMachineInventory.add(littleLeague);
+                } else if (itemDetails[3].equals("D3")) {
+                    Gum chiclets = new Gum(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Gum.GUM_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
+                    vendingMachineInventory.add(chiclets);
+                } else if (itemDetails[3].equals("D4")) {
+                    Gum triplemint = new Gum(itemDetails[1], new BigDecimal(itemDetails[2]), itemDetails[0], Gum.GUM_MESSAGE, VendingMachineItem.STARTING_QUANTITY);
+                    vendingMachineInventory.add(triplemint);
+                }
             }
+            //Ask about try and catch error?
+        } catch (FileNotFoundException ex) {
+            System.out.println("That file does not exist.");
         }
-        //Ask about try and catch error?
-    } catch(
-    FileNotFoundException ex)
-
-    {
-        System.out.println("That file does not exist.");
     }
 
     //Method that displays vending machine items (customer input "1" from main menu)
@@ -101,9 +106,11 @@ public class VendingMachine {
     }
 
     //Method that adds a dollar to the total money provided by customer (customer input "1" from purchase menu)
-    public BigDecimal feedMoney() {
-        currentMoneyProvided.add(new BigDecimal("1.00"));
-        System.out.println(currentMoneyProvided);
+    public BigDecimal feedMoney(BigDecimal moneyAdded) {
+        BigDecimal newBalance;
+        newBalance = currentMoneyProvided.add(moneyAdded);
+        currentMoneyProvided = newBalance;
+        System.out.println("Total money added: $" + currentMoneyProvided);
         return currentMoneyProvided;
     }
 
@@ -142,15 +149,15 @@ public class VendingMachine {
 
 
         String[] coin = new String[]{"Quarter(s)", "Dime(s)", "Nickle(s)"};
-        while (currentMoneyProvided.compareTo(QUARTER) >= 0 {
+        while (currentMoneyProvided.compareTo(QUARTER) >= 0) {
             quarterCounter.add(new BigDecimal("1"));
             currentMoneyProvided.subtract(QUARTER);
         }
-        while (currentMoneyProvided.compareTo(DIME) >= 0 {
+        while (currentMoneyProvided.compareTo(DIME) >= 0) {
             dimeCounter.add(new BigDecimal("1"));
             currentMoneyProvided.subtract(DIME);
         }
-        while (currentMoneyProvided.compareTo(NICKLE) >= 0 {
+        while (currentMoneyProvided.compareTo(NICKLE) >= 0) {
             nickleCounter.add(new BigDecimal("1"));
             currentMoneyProvided.subtract(NICKLE);
         }
