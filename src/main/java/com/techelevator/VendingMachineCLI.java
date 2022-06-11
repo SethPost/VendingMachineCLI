@@ -37,9 +37,10 @@ public class VendingMachineCLI {
 	}
 
 	public void run() throws InputMismatchException {
+		vendingMachine.readInventoryFile();
 		while (true) {
 
-			vendingMachine.readInventoryFile();
+
 			String choice = (String) menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
 
 			if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) {
@@ -59,8 +60,11 @@ public class VendingMachineCLI {
 						Scanner userSelection = new Scanner(System.in);
 						String userCode = userSelection.nextLine();
 						vendingMachine.selectProduct(userCode);
+						//return to purchase menu
 
-					}
+					} else if (choice2.equals(PURCHASE_MENU_FINISH_TRANSACTION)){
+						vendingMachine.finishTransaction();
+				}
 			} else if (choice.equals(MAIN_MENU_OPTION_EXIT)) {
 
 				// do exit
@@ -75,6 +79,7 @@ public class VendingMachineCLI {
 			cli.run();
 		} catch (InputMismatchException ex) {
 			System.out.println("An error occurred.");
+
 		}
 	}
 }

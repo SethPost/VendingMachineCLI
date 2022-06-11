@@ -101,46 +101,57 @@ public class VendingMachine {
     //Method used to select and buy product (Step 7 ii in Readme) (customer input "2" from purchase menu)
     public BigDecimal selectProduct(String userCode) {
         BigDecimal newBalance = new BigDecimal("0.00");
+        List<String> itemCodes = new ArrayList<>();
         // Nest in while loop to return to purchase menu??
         for (VendingMachineItem vendingMachineItem : vendingMachineInventory) {
-            if (userCode.equalsIgnoreCase(vendingMachineItem.getCode())) {
-                if (vendingMachineItem.getQuantity() > 0) {
-                    vendingMachineItem.setQuantity(vendingMachineItem.getQuantity() - 1);
-                    newBalance = currentMoneyProvided.subtract(vendingMachineItem.getPrice());
-                    currentMoneyProvided = newBalance;
-                    System.out.println(vendingMachineItem.getName() + " | Cost: $" + vendingMachineItem.getPrice()
-                            + " | Money Remaining: $" + currentMoneyProvided);
-                    System.out.println(vendingMachineItem.getMessage());
-
-                    File log = new File("C:\\Users\\Student\\workspace\\nlr-8-module-1-capstone-team-6-take-2\\Log.txt");
-                    try (PrintWriter transactionLog = new PrintWriter(
-                            new FileOutputStream(log, true)
-                    )) {
-                        // resource for finding how to get date and time - https://www.javatpoint.com/java-get-current-date
-                        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm:ss a");
-                        LocalDateTime now = LocalDateTime.now();
-                        transactionLog.println(dtf.format(now) + " " + vendingMachineItem.getName() + " " + vendingMachineItem.getCode() + " $"
-                                + vendingMachineItem.getPrice() + " $" + currentMoneyProvided);
-
-
-                    } catch (FileNotFoundException ex) {
-                        System.out.println("File not Found");
-                    }
-
-                    //go back to purchase menu
-                    return currentMoneyProvided;
+            itemCodes.add(vendingMachineItem.getCode());
+        }
+            if (itemCodes.contains(userCode)) {
+                for (VendingMachineItem vendingMachineItem : vendingMachineInventory)
+                if (!userCode.equalsIgnoreCase(vendingMachineItem.getCode())) {
+                    continue;
                 } else {
-                    System.out.println("Sorry, but that DELICIOUS item is sold out.");
-                    //go back to purchase menu
+                    if (vendingMachineItem.getQuantity() > 0) {
+                        vendingMachineItem.setQuantity(vendingMachineItem.getQuantity() - 1);
+                        newBalance = currentMoneyProvided.subtract(vendingMachineItem.getPrice());
+                        currentMoneyProvided = newBalance;
+                        System.out.println(vendingMachineItem.getName() + " | Cost: $" + vendingMachineItem.getPrice()
+                                + " | Money Remaining: $" + currentMoneyProvided);
+                        System.out.println(vendingMachineItem.getMessage());
+
+                        File log = new File("C:\\Users\\Student\\workspace\\nlr-8-module-1-capstone-team-6-take-2\\Log.txt");
+                        try (PrintWriter transactionLog = new PrintWriter(
+                                new FileOutputStream(log, true)
+
+                        )) {
+                            // resource for finding how to get date and time - https://www.javatpoint.com/java-get-current-date
+                            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm:ss a");
+                            LocalDateTime now = LocalDateTime.now();
+                            transactionLog.println(dtf.format(now) + " " + vendingMachineItem.getName() + " " + vendingMachineItem.getCode() + " $"
+                                    + vendingMachineItem.getPrice() + " $" + currentMoneyProvided);
+
+
+                        } catch (FileNotFoundException ex) {
+                            System.out.println("File not Found");
+                        }
+
+                        //go back to purchase menu
+                        return currentMoneyProvided;
+                    } else {
+                        System.out.println("Sorry, but that DELICIOUS item is sold out.");
+                        //go back to purchase menu
+                    }
                 }
             } else {
                 System.out.println("Sorry, that code is invalid.");
                 //go back to purchase menu
-            }
+            }return newBalance;
+
 
         }
-        return newBalance;
-    }
+
+
+
 
     public BigDecimal finishTransaction() {
         BigDecimal quarterCounter = new BigDecimal("0");
@@ -191,6 +202,9 @@ public class VendingMachine {
 
     }
 }
+
+
+
 
 
 
