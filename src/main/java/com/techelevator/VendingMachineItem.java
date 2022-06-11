@@ -6,7 +6,7 @@ public abstract class VendingMachineItem {
     private String name;
     private BigDecimal price;
     private String code;
-    private String message;
+    public String message;
     private int quantity;
     public static final int STARTING_QUANTITY = 5;
 
@@ -39,7 +39,7 @@ public abstract class VendingMachineItem {
         this.code = code;
     }
 
-    public String getMessage() {
+   public String getMessage() {
         return message;
     }
 
@@ -52,7 +52,6 @@ public abstract class VendingMachineItem {
         this.price = price;
         this.code = code;
         this.quantity = STARTING_QUANTITY;
-
     }
 
     public VendingMachineItem() {
