@@ -34,8 +34,9 @@ public class VendingMachineTests {
         Assert.assertEquals(expectedResult, vendingMachine.getCurrentMoneyProvided());
     }
 
+
     @Test
-    public void test_select_product_valid_code(){
+    public void test_select_product_valid_code() {
         VendingMachine testVendingMachine = new VendingMachine(new BigDecimal("10.00"));
         testVendingMachine.readInventoryFile();
         BigDecimal testBalance = new BigDecimal(String.valueOf(testVendingMachine.selectProduct("A1")));
@@ -70,5 +71,13 @@ public class VendingMachineTests {
         BigDecimal testResult = testVendingMachine.finishTransaction();
         Assert.assertEquals(new BigDecimal("0.00"), testResult);
     }
+    @Test
+    public void test_balance_does_not_go_negative(){
+        VendingMachine testVendingMachine = new VendingMachine(new BigDecimal("1.00"));
+        testVendingMachine.readInventoryFile();
+        BigDecimal testResult = testVendingMachine.selectProduct("C2");
+        Assert.assertEquals(new BigDecimal("1.00"), testResult);
+    }
+
 
 }

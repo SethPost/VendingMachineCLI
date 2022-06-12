@@ -80,6 +80,7 @@ public class VendingMachine {
         currentMoneyProvided = newBalance;
         System.out.println("Total money added: $" + currentMoneyProvided);
 
+
         File log = new File("C:\\Users\\Student\\workspace\\nlr-8-module-1-capstone-team-6-take-2\\Log.txt");
         try (PrintWriter transactionLog = new PrintWriter(
                 new FileOutputStream(log, true)
@@ -106,12 +107,12 @@ public class VendingMachine {
         for (VendingMachineItem vendingMachineItem : vendingMachineInventory) {
             itemCodes.add(vendingMachineItem.getCode());
         }
-            if (itemCodes.contains(userCode)) {
-                for (VendingMachineItem vendingMachineItem : vendingMachineInventory)
+        if (itemCodes.contains(userCode)) {
+            for (VendingMachineItem vendingMachineItem : vendingMachineInventory)
                 if (!userCode.equals(vendingMachineItem.getCode())) {
                     continue;
                 } else {
-                    if (vendingMachineItem.getQuantity() > 0) {
+                    if (vendingMachineItem.getQuantity() > 0 && vendingMachineItem.getPrice().compareTo(currentMoneyProvided) <= 0 ) {
                         vendingMachineItem.setQuantity(vendingMachineItem.getQuantity() - 1);
                         newBalance = currentMoneyProvided.subtract(vendingMachineItem.getPrice());
                         currentMoneyProvided = newBalance;
@@ -136,20 +137,26 @@ public class VendingMachine {
                         }
 
                         return currentMoneyProvided;
-                    } else {
+                    } else if (vendingMachineItem.getQuantity() == 0) {
                         System.out.println("Sorry, but that DELICIOUS item is sold out.");
+                        return currentMoneyProvided;
                         //go back to purchase menu
-                    }
+                    } else if (vendingMachineItem.getPrice().compareTo(currentMoneyProvided) > 0 ){
+                        System.out.println("Sorry, you don't have enough funds to buy that. Please add more money to complete transaction.");
+                        return currentMoneyProvided;
+
                 }
-            } else {
-                System.out.println("Sorry, that code is invalid. Please try again.");
-                //go back to purchase menu
-            }return currentMoneyProvided;
-
-
         }
 
+    } else
 
+    {
+        System.out.println("Sorry, that code is invalid. Please try again.");
+        //go back to purchase menu
+    }return currentMoneyProvided;
+
+
+}
 
 
     public BigDecimal finishTransaction() {

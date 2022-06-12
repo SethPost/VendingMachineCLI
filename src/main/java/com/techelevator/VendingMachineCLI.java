@@ -16,74 +16,81 @@ import com.techelevator.VendingMachine;
 
 public class VendingMachineCLI {
 
-	private static final String MAIN_MENU_OPTION_DISPLAY_ITEMS = "Display Vending Machine Items";
-	private static final String MAIN_MENU_OPTION_PURCHASE = "Purchase";
-	private static final String MAIN_MENU_OPTION_EXIT = "Exit";
-	private static final String[] MAIN_MENU_OPTIONS = { MAIN_MENU_OPTION_DISPLAY_ITEMS, MAIN_MENU_OPTION_PURCHASE,
-	MAIN_MENU_OPTION_EXIT};
+    private static final String MAIN_MENU_OPTION_DISPLAY_ITEMS = "Display Vending Machine Items";
+    private static final String MAIN_MENU_OPTION_PURCHASE = "Purchase";
+    private static final String MAIN_MENU_OPTION_EXIT = "Exit";
+    private static final String[] MAIN_MENU_OPTIONS = {MAIN_MENU_OPTION_DISPLAY_ITEMS, MAIN_MENU_OPTION_PURCHASE,
+            MAIN_MENU_OPTION_EXIT};
 
-	private static final String PURCHASE_MENU_FEED_MONEY = "Feed Money";
-	private static final String PURCHASE_MENU_SELECT_PRODUCT = "Select Product";
-	private static final String PURCHASE_MENU_FINISH_TRANSACTION = "Finish Transaction";
-	private static final String[] PURCHASE_MENU_OPTIONS = {PURCHASE_MENU_FEED_MONEY, PURCHASE_MENU_SELECT_PRODUCT,
-	PURCHASE_MENU_FINISH_TRANSACTION};
+    private static final String PURCHASE_MENU_FEED_MONEY = "Feed Money";
+    private static final String PURCHASE_MENU_SELECT_PRODUCT = "Select Product";
+    private static final String PURCHASE_MENU_FINISH_TRANSACTION = "Finish Transaction";
+    private static final String[] PURCHASE_MENU_OPTIONS = {PURCHASE_MENU_FEED_MONEY, PURCHASE_MENU_SELECT_PRODUCT,
+            PURCHASE_MENU_FINISH_TRANSACTION};
 
-	VendingMachine vendingMachine = new VendingMachine(new BigDecimal("0.00"));
+    VendingMachine vendingMachine = new VendingMachine(new BigDecimal("0.00"));
 
-	private Menu menu;
+    private Menu menu;
 
-	public VendingMachineCLI(Menu menu) {
-		this.menu = menu;
-	}
+    public VendingMachineCLI(Menu menu) {
+        this.menu = menu;
+    }
 
-	public void run() throws InputMismatchException {
-		vendingMachine.readInventoryFile();
-		while (true) {
+    public void run() throws InputMismatchException {
+        vendingMachine.readInventoryFile();
+        while (true) {
 
 
-			String choice = (String) menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
+            String choice = (String) menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
 
-			if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) {
-				// display vending machine items
-				vendingMachine.displayItems();
-			} else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
-				while (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
-					String choice2 = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
-					// while (choice2 = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS)){
-					if (choice2.equals(PURCHASE_MENU_FEED_MONEY)) {
-						System.out.println("Please enter the amount of money you wish to add (whole dollar amounts only, please): ");
-						Scanner userAddMoney = new Scanner(System.in);
-						BigDecimal moneyAdded = userAddMoney.nextBigDecimal();
-						vendingMachine.feedMoney(moneyAdded);
-					}
-					else if (choice2.equals(PURCHASE_MENU_SELECT_PRODUCT)) {
-						vendingMachine.displayItems();
-						System.out.println("Please enter the code for the item you wish to purchase: ");
-						Scanner userSelection = new Scanner(System.in);
-						String userCode = userSelection.nextLine().toUpperCase();
-						vendingMachine.selectProduct(userCode);
+            if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) {
+                // display vending machine items
+                vendingMachine.displayItems();
+            } else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
+                while (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
+                    String choice2 = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
+                    // while (choice2 = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS)){
+                    if (choice2.equals(PURCHASE_MENU_FEED_MONEY)) {
+                        try {
+                            System.out.println("Please enter the amount of money you wish to add (whole dollar amounts only, please): ");
+                            Scanner userAddMoney = new Scanner(System.in);
+                            BigDecimal moneyAdded = userAddMoney.nextBigDecimal();
+                            vendingMachine.feedMoney(moneyAdded);
 
-					}
-					else if (choice2.equals(PURCHASE_MENU_FINISH_TRANSACTION)) {
-						vendingMachine.finishTransaction();
-						break;
-					}
-				}
-			} else if (choice.equals(MAIN_MENU_OPTION_EXIT)) {
-				System.out.println("Thank you for using the vending machine. Have a great day!");
-				break;
-			}
-		}
-	}
+                        } catch (InputMismatchException ex) {
+                            System.out.println("Input error - Please enter the amount of money you wish to add as numerical digits.");
 
-	public static void main(String[] args) {
-		Menu menu = new Menu(System.in, System.out);
-		VendingMachineCLI cli = new VendingMachineCLI(menu);
-		try {
-			cli.run();
-		} catch (InputMismatchException ex) {
-			System.out.println("An input error occurred. Please try again.");
+                        }
 
-		}
-	}
+                    } else if (choice2.equals(PURCHASE_MENU_SELECT_PRODUCT)) {
+                        vendingMachine.displayItems();
+                        System.out.println("Please enter the code for the item you wish to purchase: ");
+                        Scanner userSelection = new Scanner(System.in);
+                        String userCode = userSelection.nextLine().toUpperCase();
+                        vendingMachine.selectProduct(userCode);
+
+
+
+                    } else if (choice2.equals(PURCHASE_MENU_FINISH_TRANSACTION)) {
+                        vendingMachine.finishTransaction();
+                        break;
+                    }
+                }
+            } else if (choice.equals(MAIN_MENU_OPTION_EXIT)) {
+                System.out.println("Thank you for using the vending machine. Have a great day!");
+                break;
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        Menu menu = new Menu(System.in, System.out);
+        VendingMachineCLI cli = new VendingMachineCLI(menu);
+        try {
+            cli.run();
+        } catch (InputMismatchException ex) {
+            System.out.println("An input error occurred. Please try again.");
+
+        }
+    }
 }
