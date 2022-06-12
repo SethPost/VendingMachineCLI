@@ -47,27 +47,31 @@ public class VendingMachineCLI {
 				// display vending machine items
 				vendingMachine.displayItems();
 			} else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
-				// do purchase
-				String choice2 = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
+				while (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
+					String choice2 = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
+					// while (choice2 = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS)){
 					if (choice2.equals(PURCHASE_MENU_FEED_MONEY)) {
 						System.out.println("Please enter the amount of money you wish to add (whole dollar amounts only, please): ");
 						Scanner userAddMoney = new Scanner(System.in);
 						BigDecimal moneyAdded = userAddMoney.nextBigDecimal();
 						vendingMachine.feedMoney(moneyAdded);
-					} else if (choice2.equals(PURCHASE_MENU_SELECT_PRODUCT)) {
+					}
+					else if (choice2.equals(PURCHASE_MENU_SELECT_PRODUCT)) {
 						vendingMachine.displayItems();
 						System.out.println("Please enter the code for the item you wish to purchase: ");
 						Scanner userSelection = new Scanner(System.in);
-						String userCode = userSelection.nextLine();
+						String userCode = userSelection.nextLine().toUpperCase();
 						vendingMachine.selectProduct(userCode);
-						//return to purchase menu
 
-					} else if (choice2.equals(PURCHASE_MENU_FINISH_TRANSACTION)){
+					}
+					else if (choice2.equals(PURCHASE_MENU_FINISH_TRANSACTION)) {
 						vendingMachine.finishTransaction();
+						break;
+					}
 				}
 			} else if (choice.equals(MAIN_MENU_OPTION_EXIT)) {
-
-				// do exit
+				System.out.println("Thank you for using the vending machine. Have a great day!");
+				break;
 			}
 		}
 	}
@@ -78,7 +82,7 @@ public class VendingMachineCLI {
 		try {
 			cli.run();
 		} catch (InputMismatchException ex) {
-			System.out.println("An error occurred.");
+			System.out.println("An input error occurred. Please try again.");
 
 		}
 	}

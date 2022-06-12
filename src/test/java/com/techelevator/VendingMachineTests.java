@@ -35,10 +35,19 @@ public class VendingMachineTests {
     }
 
     @Test
+    public void test_select_product_valid_code(){
+        VendingMachine testVendingMachine = new VendingMachine(new BigDecimal("10.00"));
+        testVendingMachine.readInventoryFile();
+        BigDecimal testBalance = new BigDecimal(String.valueOf(testVendingMachine.selectProduct("A1")));
+        Assert.assertEquals(new BigDecimal("6.95"), testBalance);
+    }
+
+    @Test
     public void test_select_product_invalid_code(){
         VendingMachine testVendingMachine = new VendingMachine(new BigDecimal("10.00"));
-        testVendingMachine.selectProduct("A1");
-        Assert.assertEquals("6.95", testVendingMachine.getCurrentMoneyProvided());
+        testVendingMachine.readInventoryFile();
+        BigDecimal testBalance = new BigDecimal(String.valueOf(testVendingMachine.selectProduct("Z1")));
+        Assert.assertEquals(new BigDecimal("10.00"), testBalance);
     }
 
     @Test

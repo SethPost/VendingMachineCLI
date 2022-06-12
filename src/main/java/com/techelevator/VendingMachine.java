@@ -102,13 +102,13 @@ public class VendingMachine {
     public BigDecimal selectProduct(String userCode) {
         BigDecimal newBalance = new BigDecimal("0.00");
         List<String> itemCodes = new ArrayList<>();
-        // Nest in while loop to return to purchase menu??
+
         for (VendingMachineItem vendingMachineItem : vendingMachineInventory) {
             itemCodes.add(vendingMachineItem.getCode());
         }
             if (itemCodes.contains(userCode)) {
                 for (VendingMachineItem vendingMachineItem : vendingMachineInventory)
-                if (!userCode.equalsIgnoreCase(vendingMachineItem.getCode())) {
+                if (!userCode.equals(vendingMachineItem.getCode())) {
                     continue;
                 } else {
                     if (vendingMachineItem.getQuantity() > 0) {
@@ -135,7 +135,6 @@ public class VendingMachine {
                             System.out.println("File not Found");
                         }
 
-                        //go back to purchase menu
                         return currentMoneyProvided;
                     } else {
                         System.out.println("Sorry, but that DELICIOUS item is sold out.");
@@ -143,9 +142,9 @@ public class VendingMachine {
                     }
                 }
             } else {
-                System.out.println("Sorry, that code is invalid.");
+                System.out.println("Sorry, that code is invalid. Please try again.");
                 //go back to purchase menu
-            }return newBalance;
+            }return currentMoneyProvided;
 
 
         }
