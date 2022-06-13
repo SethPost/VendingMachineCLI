@@ -59,7 +59,7 @@ public class VendingMachineCLI {
                     // while (choice2 = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS)){
                     if (choice2.equals(PURCHASE_MENU_FEED_MONEY)) {
                         try {
-                            System.out.println("Please enter the amount of money you wish to add (whole dollar amounts only, please): ");
+                            System.out.println("Please enter the amount of money you wish to add (no more than $100.00 at a time, please): ");
                             Scanner userAddMoney = new Scanner(System.in);
                             BigDecimal moneyAdded = userAddMoney.nextBigDecimal();
                             vendingMachine.feedMoney(moneyAdded);
@@ -97,6 +97,7 @@ public class VendingMachineCLI {
                 System.out.println("   \\ \\_______\\ \\__\\    \\ \\__\\ \\_______\\ \\__\\\\ _\\\\ \\_______\\ \\_______\\ \\_______\\ \\__\\ \\__\\       \\ \\_______\\ \\_______\\ \\__\\\\ _\\\\ \\__\\");
                 System.out.println("    \\|_______|\\|__|     \\|__|\\|_______|\\|__|\\|__|\\|_______|\\|_______|\\|_______|\\|__|\\|__|        \\|_______|\\|_______|\\|__|\\|__|\\|__|     ");
                 System.out.println();
+                System.out.println("*** CONFIDENTIAL ***");
                 System.out.println();
                 System.out.println("Umbrella Corporation's plan to take over the world is almost complete.");
                 System.out.println("Our genius software developers Alex Giles and Seth Post have completed programming the vending machines that will");

@@ -75,7 +75,7 @@ public class VendingMachine {
 
     //Method that adds a dollar to the total money provided by customer (customer input "1" from purchase menu)
     public BigDecimal feedMoney(BigDecimal moneyAdded) {
-        if (moneyAdded.compareTo(new BigDecimal(0)) > 0) {
+        if (moneyAdded.compareTo(new BigDecimal("0")) > 0 && (moneyAdded.compareTo(new BigDecimal("100.00")) <= 0)) {
             BigDecimal newBalance;
             newBalance = currentMoneyProvided.add(moneyAdded);
             currentMoneyProvided = newBalance;
@@ -97,8 +97,8 @@ public class VendingMachine {
             }
 
             //return currentMoneyProvided;
-        } else if (moneyAdded.compareTo(new BigDecimal("0")) <= 0) {
-            System.out.println("Input error - You must add more than 0.");
+        } else if (moneyAdded.compareTo(new BigDecimal("0")) <= 0 || (moneyAdded.compareTo(new BigDecimal("100.00")) > 0)) {
+            System.out.println("Input error - You must add more than 0 (max: $100.00)");
         }
         return currentMoneyProvided;
     }
@@ -148,7 +148,6 @@ public class VendingMachine {
                     } else if (vendingMachineItem.getPrice().compareTo(currentMoneyProvided) > 0 ){
                         System.out.println("Sorry, you don't have enough funds to buy that. Please add more money to complete transaction.");
                         return currentMoneyProvided;
-
                 }
         }
 
