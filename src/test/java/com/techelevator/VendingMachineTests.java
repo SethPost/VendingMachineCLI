@@ -34,6 +34,22 @@ public class VendingMachineTests {
         Assert.assertEquals(expectedResult, vendingMachine.getCurrentMoneyProvided());
     }
 
+    @Test
+    public void test_feed_money_negative_dollars() {
+        BigDecimal amountAdded = new BigDecimal("-3.00");
+        BigDecimal expectedResult = new BigDecimal("0.00");
+        vendingMachine.feedMoney(amountAdded);
+        Assert.assertEquals(expectedResult, vendingMachine.getCurrentMoneyProvided());
+    }
+
+    @Test
+    public void test_feed_money_zero_dollars() {
+        BigDecimal amountAdded = new BigDecimal("0.00");
+        BigDecimal expectedResult = new BigDecimal("0.00");
+        vendingMachine.feedMoney(amountAdded);
+        Assert.assertEquals(expectedResult, vendingMachine.getCurrentMoneyProvided());
+    }
+
 
     @Test
     public void test_select_product_valid_code() {

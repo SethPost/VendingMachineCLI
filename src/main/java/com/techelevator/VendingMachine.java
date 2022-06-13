@@ -75,28 +75,32 @@ public class VendingMachine {
 
     //Method that adds a dollar to the total money provided by customer (customer input "1" from purchase menu)
     public BigDecimal feedMoney(BigDecimal moneyAdded) {
-        BigDecimal newBalance;
-        newBalance = currentMoneyProvided.add(moneyAdded);
-        currentMoneyProvided = newBalance;
-        System.out.println("Total money added: $" + currentMoneyProvided);
+        if (moneyAdded.compareTo(new BigDecimal(0)) > 0) {
+            BigDecimal newBalance;
+            newBalance = currentMoneyProvided.add(moneyAdded);
+            currentMoneyProvided = newBalance;
+            System.out.println("Total money added: $" + currentMoneyProvided);
 
 
-        File log = new File("C:\\Users\\Student\\workspace\\nlr-8-module-1-capstone-team-6-take-2\\Log.txt");
-        try (PrintWriter transactionLog = new PrintWriter(
-                new FileOutputStream(log, true)
-        )) {
-            // resource for finding how to get date and time - https://www.javatpoint.com/java-get-current-date
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm:ss a");
-            LocalDateTime now = LocalDateTime.now();
-            transactionLog.println(dtf.format(now) + " FEED MONEY: $" + moneyAdded + " $" + currentMoneyProvided);
+            File log = new File("C:\\Users\\Student\\workspace\\nlr-8-module-1-capstone-team-6-take-2\\Log.txt");
+            try (PrintWriter transactionLog = new PrintWriter(
+                    new FileOutputStream(log, true)
+            )) {
+                // resource for finding how to get date and time - https://www.javatpoint.com/java-get-current-date
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm:ss a");
+                LocalDateTime now = LocalDateTime.now();
+                transactionLog.println(dtf.format(now) + " FEED MONEY: $" + moneyAdded + " $" + currentMoneyProvided);
 
 
-        } catch (FileNotFoundException ex) {
-            System.out.println("File not Found");
+            } catch (FileNotFoundException ex) {
+                System.out.println("File not Found");
+            }
+
+            //return currentMoneyProvided;
+        } else if (moneyAdded.compareTo(new BigDecimal("0")) <= 0) {
+            System.out.println("Input error - You must add more than 0.");
         }
-
         return currentMoneyProvided;
-
     }
 
     //Method used to select and buy product (Step 7 ii in Readme) (customer input "2" from purchase menu)
